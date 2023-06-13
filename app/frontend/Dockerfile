@@ -1,7 +1,8 @@
 FROM node:14-alpine
 WORKDIR /app-frontend 
 EXPOSE 3000
-COPY . .
+COPY package* ./
 RUN npm install
-ENTRYPOINT [ "npm" ]
+COPY . .
+ENTRYPOINT [ "npm", "run" ]
 CMD [ "start" ]
