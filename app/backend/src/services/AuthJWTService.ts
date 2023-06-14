@@ -10,4 +10,14 @@ export default class AuthJWTService implements TokenGenerate {
     const token = this.jwt.sign({ id: user.id }, 'jwt_secret');
     return token;
   }
+
+  async validate(token: string): Promise<number | null> {
+    try {
+      //  verifica se o token é válido e retorna decodificado e o as pra fazer a conversão em number
+      const decoded = this.jwt.verify(token, 'jwt_secret') as { id: number };
+      return decoded.id;
+    } catch (error) {
+      return null;
+    }
+  }
 }

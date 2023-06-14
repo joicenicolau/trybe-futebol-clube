@@ -20,4 +20,20 @@ export default class UserController {
     // se não retorno feliz
     return res.status(200).json(serviceResponse.data);
   }
+
+  public async getRole(req: Request, res: Response): Promise<Response> {
+    const authorizationHeader = req.headers.authorization;
+
+    if (!authorizationHeader) {
+      return res.status(401).json({ message: 'Authorization header missing' });
+    }
+
+    const roleResponse = await this.userService.getRole(authorizationHeader);
+
+    if (roleResponse.status !== 'SUCCESSFUL') {
+      return res.status(mapStatusHTTP(roleResponse.status)).json(roleResponse.data);
+    }
+
+    return res.status(200).json({ role: roleResponse.data });
+  }
 }
