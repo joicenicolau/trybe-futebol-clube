@@ -1,3 +1,4 @@
+// pesquisa https://github.com/tryber/sd-027-a-live-lectures/blob/lecture/back/10.1/src/utils/mapStatusHTTP.ts
 export default function mapStatusHTTP(status: string): number {
   switch (status) {
     case 'SUCCESSFUL': return 200;

@@ -5,11 +5,13 @@ import { ServiceResponse } from '../Interfaces/ServiceResponse';
 
 export default class UserService {
   constructor(
+    // recebe as instancias
     private userModel: typeof UserModel,
     private encrypter: Encrypter,
     private tokenGenerator: TokenGenerate,
   ) {}
 
+  // pesquisa: https://github.com/tryber/sd-027-a-live-lectures/blob/lecture/back/10.1/src/services/UserService.ts
   public async login(email: string, password: string): Promise<ServiceResponse<{ token: string }>> {
     const user = await this.userModel.findOne({ where: { email } });
 

@@ -1,3 +1,4 @@
+// pesquisa https://github.com/tryber/sd-027-a-live-lectures/blob/lecture/back/10.1/src/services/TokenGeneratorJwt.ts
 import * as jwt from 'jsonwebtoken';
 import { IUser } from '../Interfaces/user/IUser';
 import { TokenGenerate } from '../Interfaces/token/TokenGenerate';
