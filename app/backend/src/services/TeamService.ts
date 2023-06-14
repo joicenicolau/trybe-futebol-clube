@@ -14,6 +14,13 @@ class TeamService {
     const allTeams = await this._model.findAll();
     return allTeams;
   }
+
+  public async getTeamById(pk: number): Promise<ITeams> {
+    const team = await this._model.findByPk(pk);
+    // apesar do req não pedir fiz o erro, vez que o return estava vindo com um erro de undefined
+    if (!team) throw new Error('Team not found');
+    return team;
+  }
 }
 
 export default TeamService;

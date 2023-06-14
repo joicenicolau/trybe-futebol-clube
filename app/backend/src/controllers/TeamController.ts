@@ -8,7 +8,14 @@ class TeamController {
 
   public async getAllTeams(_req: Request, res: Response) {
     const serviceResponse = await this.teamService.getAllTeams();
-    res.status(200).json(serviceResponse);
+
+    return res.status(200).json(serviceResponse);
+  }
+
+  public async getTeamById(req: Request, res: Response) {
+    const serviceResponse = await this.teamService.getTeamById(Number(req.params.id));
+
+    return res.status(200).json(serviceResponse);
   }
 }
 
