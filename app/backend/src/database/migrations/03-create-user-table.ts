@@ -11,11 +11,11 @@ export default {
         autoIncrement: true,
       },
       username: {
-        allowNull: false, 
+        // allowNull: false, 
         type: DataTypes.STRING,
       }, 
       role: {
-        allowNull: false,
+        // allowNull: false,
         type: DataTypes.STRING,
       },
       email: {
