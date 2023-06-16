@@ -1,3 +1,4 @@
+import { ServiceResponse } from '../Interfaces/ServiceResponse';
 import IMatch from '../Interfaces/match/IMatch';
 import MatchModel from '../database/models/MatchModel';
 import Team from '../database/models/TeamModel';
@@ -35,6 +36,18 @@ class MatchService {
     });
 
     return matches;
+  }
+
+  public static async updateMatchById(id: number):
+  Promise<ServiceResponse<{ message: string }>> {
+    await MatchModel.update({ inProgress: false }, { where: { id } });
+    return { status: 'SUCCESSFUL', data: { message: 'Finished' } };
+  }
+
+  public static async update(id: number, homeTeamGoals: number, awayTeamGoals: number):
+  Promise<ServiceResponse<{ message: string }>> {
+    await MatchModel.update({ homeTeamGoals, awayTeamGoals }, { where: { id } });
+    return { status: 'SUCCESSFUL', data: { message: 'Updated' } };
   }
 }
 
