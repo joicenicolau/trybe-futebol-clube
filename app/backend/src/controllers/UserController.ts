@@ -23,7 +23,6 @@ export default class UserController {
 
   public async getRole(req: Request, res: Response): Promise<Response> {
     const authorizationHeader = req.headers.authorization;
-
     if (!authorizationHeader) {
       return res.status(401).json({ message: 'Authorization header missing' });
     }

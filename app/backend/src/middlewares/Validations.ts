@@ -32,16 +32,17 @@ class Validations {
     }
 
     try {
-      // // Define sua chave secreta aqui
+      // Define sua chave secreta aqui
       const secret = process.env.JWT_SECRET || '';
       // cha,a a verify do jwt, sendo que pedia 02 params.
       jwt.verify(authorization, secret);
       // se chegar até aqui = sucesso
-      next();
     } catch (error) {
       //  se não, dá o erro do token não válido
       return res.status(401).json({ message: 'Token must be a valid token' });
     }
+
+    next();
   }
 }
 
