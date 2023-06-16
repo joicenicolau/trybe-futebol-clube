@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import * as jwt from 'jsonwebtoken';
+import TeamModel from '../database/models/TeamModel';
 
 class Validations {
   static validateLogin(req: Request, res: Response, next: NextFunction): Response | void {
@@ -18,7 +19,7 @@ class Validations {
       return res.status(401).json({ message: 'Invalid email or password' });
     }
 
-    next();
+    return next();
   }
 
   static async validateToken(req: Request, res: Response, next: NextFunction):
@@ -42,7 +43,34 @@ class Validations {
       return res.status(401).json({ message: 'Token must be a valid token' });
     }
 
-    next();
+    return next();
+  }
+
+  static async validateMatches(req: Request, res: Response, next: NextFunction):
+  Promise<Response | void> {
+    const { homeTeamId, awayTeamId } = req.body;
+
+    if (homeTeamId === awayTeamId) {
+      return res.status(422)
+        .json({ message: 'It is not possible to create a match with two equal teams' });
+    }
+
+    try {
+      // buscar os times de forma assíncrona.
+      const [homeTeam, awayTeam] = await Promise.all([
+        TeamModel.findByPk(homeTeamId),
+        TeamModel.findByPk(awayTeamId),
+      ]);
+
+      if (!homeTeam || !awayTeam) {
+        return res.status(404).json({ message: 'There is no team with such id!' });
+      }
+    } catch (error) {
+      // caso veir erro do db
+      return res.status(500).json({ message: 'Internal server error' });
+    }
+
+    return next();
   }
 }
 

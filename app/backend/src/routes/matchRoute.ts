@@ -22,4 +22,11 @@ router.patch(
   (req: Request, res: Response) => MatchController.update(req, res),
 );
 
+router.post(
+  '/',
+  Validations.validateToken,
+  Validations.validateMatches,
+  (req: Request, res: Response) => MatchController.create(req, res),
+);
+
 export default router;
