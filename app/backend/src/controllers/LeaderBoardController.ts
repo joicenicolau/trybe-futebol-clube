@@ -5,7 +5,7 @@ import { ITeams } from '../Interfaces/team/ITeam';
 import sortMatches from '../utils/sort';
 
 export default class LeaderboardController {
-  static async getFinishedMatchesHome(_req: Request, res: Response) {
+  static async getMatchesHome(_req: Request, res: Response) {
     try {
       // instancia TeamService, pois ainda não estava fazendo static
       const teamService = new TeamService();
@@ -15,7 +15,7 @@ export default class LeaderboardController {
         teams.map(async (team: ITeams) => {
           // pegar todos os calcs para as partidas finalizadas
           // O ID da equipe é passado como argumento. Caso o ID seja undefined, é usado o valor 0
-          const match = await LeaderBoardService.getFinishedMatchesHome(team.id || 0);
+          const match = await LeaderBoardService.getMatchesHome(team.id || 0);
           return match;
         }),
       );
@@ -27,13 +27,13 @@ export default class LeaderboardController {
     }
   }
 
-  static async getFinishedMatchesAway(_req: Request, res: Response) {
+  static async getMatchesAway(_req: Request, res: Response) {
     try {
       const teamService = new TeamService();
       const teams = await teamService.getAllTeams();
       const matches = await Promise.all(
         teams.map(async (team: ITeams) => {
-          const match = await LeaderBoardService.getFinishedMatchesAway(team.id || 0);
+          const match = await LeaderBoardService.getMatchesAway(team.id || 0);
           return match;
         }),
       );
@@ -42,5 +42,17 @@ export default class LeaderboardController {
       console.error(error);
       return res.status(500).json({ error: 'Internal Server Error' });
     }
+  }
+
+  static async getMatches(_req: Request, res: Response) {
+    const teamService = new TeamService();
+    const teams = await teamService.getAllTeams();
+    const matches = await Promise.all(
+      teams.map(async (team: ITeams) => {
+        const match = await LeaderBoardService.getMatches(team.id || 0);
+        return match;
+      }),
+    );
+    return res.status(200).json(sortMatches(matches));
   }
 }

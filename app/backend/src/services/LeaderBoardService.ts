@@ -46,7 +46,7 @@ export default class LeaderBoardService {
     );
   }
 
-  public static async getFinishedMatchesHome(id: number): Promise<ILeaderBoard> {
+  public static async getMatchesHome(id: number): Promise<ILeaderBoard> {
     // Encontrar todas as partidas em que inProgress é false e homeTeamId corresponde ao id passado
     const matches = await MatchModel.findAll({ where: { inProgress: false, homeTeamId: id } });
     // pegar as infos de teams para o id passado
@@ -94,7 +94,7 @@ export default class LeaderBoardService {
     );
   }
 
-  public static async getFinishedMatchesAway(id: number): Promise<ILeaderBoard> {
+  public static async getMatchesAway(id: number): Promise<ILeaderBoard> {
     const matches = await MatchModel.findAll({ where: { inProgress: false, awayTeamId: id } });
     const teams = await LeaderBoardService.getTeamById(id);
     const { countDraws, countVictories, countGoalsFavor, countGoalsOwn,
@@ -113,5 +113,25 @@ export default class LeaderBoardService {
       goalsOwn: countGoalsFavor,
       goalsBalance,
       efficiency };
+  }
+
+  public static async getMatches(id: number): Promise<ILeaderBoard> {
+    const homeMatches = await LeaderBoardService.getMatchesHome(id);
+    const awayMatches = await LeaderBoardService.getMatchesAway(id);
+
+    return {
+      name: homeMatches.name,
+      totalPoints: homeMatches.totalPoints + awayMatches.totalPoints,
+      totalGames: homeMatches.totalGames + awayMatches.totalGames,
+      totalVictories: homeMatches.totalVictories + awayMatches.totalVictories,
+      totalDraws: homeMatches.totalDraws + awayMatches.totalDraws,
+      totalLosses: homeMatches.totalLosses + awayMatches.totalLosses,
+      goalsFavor: homeMatches.goalsFavor + awayMatches.goalsFavor,
+      goalsOwn: homeMatches.goalsOwn + awayMatches.goalsOwn,
+      goalsBalance: homeMatches.goalsBalance + awayMatches.goalsBalance,
+      efficiency: (((homeMatches.totalPoints
+        + awayMatches.totalPoints) / ((homeMatches.totalGames
+          + awayMatches.totalGames) * 3)) * 100).toFixed(2),
+    };
   }
 }
