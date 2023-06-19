@@ -6,7 +6,12 @@ const router = Router();
 
 router.get(
   '/home',
-  (req: Request, res: Response) => LeaderBoardController.getFinishedMatches(req, res),
+  (req: Request, res: Response) => LeaderBoardController.getFinishedMatchesHome(req, res),
+);
+
+router.get(
+  '/away',
+  (req: Request, res: Response) => LeaderBoardController.getFinishedMatchesAway(req, res),
 );
 
 export default router;
