@@ -126,8 +126,7 @@ class MatchService {
     return { status: 'SUCCESSFUL', data: { message: 'Updated' } };
   }
 
-  public static create = async (match: IMatch):
-  Promise<ServiceResponse<IMatch | ServiceMessage>> => {
+  public static async create(match: IMatch): Promise<ServiceResponse<IMatch | ServiceMessage>> {
     const newMatchData = {
       ...match,
       inProgress: true,
@@ -136,7 +135,7 @@ class MatchService {
     const newMatch = await MatchModel.create(newMatchData);
 
     return { status: 'CREATED', data: newMatch };
-  };
+  }
 }
 
 export default MatchService;
