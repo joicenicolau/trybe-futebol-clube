@@ -2,6 +2,8 @@
 
 Este projeto foi desenvolvido ao final do módulo de Back-end da [Trybe](https://www.betrybe.com/),onde aplico tudo o que estudei durante este módulo, principalmente o `Typescript`, `Sequelize` e autenticação, utilizando o `JWT (JSON Web Token)` e o `BCrypt` (ele faz o hash da sua senha para ser criptografada no banco de dados, para que ninguém possa entendê-la, garantindo mais segurança).
 
+Também desenvolvi alguns testes. Os testes que envolvem o framework Express, juntamente com as bibliotecas Sinon e Chai, são comumente conhecidos como "testes de integração" ou "testes de API". Esses testes são utilizados para verificar o comportamento correto da API REST construída com o Express, bem como para testar a interação entre as diferentes partes do sistema.
+
 ## Descrição
 
 O TFC é um projeto individual que tem como objetivo aplicar todos os conhecimentos adquiridos até o momento, envolvendo a integração entre o front-end e back-end, a configuração do banco de dados, a utilização do Docker Compose, a modelagem de dados com MySQL utilizando o Sequelize, a criação e associação de tabelas através de models do Sequelize, a construção de uma API REST com endpoints e a implementação de um CRUD com TypeScript, utilizando o ORM Sequelize.
