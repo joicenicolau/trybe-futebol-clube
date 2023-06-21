@@ -1,6 +1,5 @@
 import { ILeaderBoard } from '../Interfaces/ILeaderBoard';
 
-// recebe um array de objetos ILeaderBoard como parâmetro e retorna o mesmo array, porém ordenado.
 export default (teams: ILeaderBoard[]): ILeaderBoard[] => (
   teams.sort((a, b) => {
     if (a.totalPoints !== b.totalPoints) return b.totalPoints - a.totalPoints;

@@ -46,11 +46,10 @@ describe('/teams rotas', () => {
         .stub(TeamModel, 'findByPk')
         .resolves(null);
       
-      const teamService = new TeamService();
       let error: Error | undefined;
   
       try {
-        await teamService.getTeamById(teamId);
+        await TeamService.getTeamById(teamId);
       } catch (err: any) {
         error = err;
       }

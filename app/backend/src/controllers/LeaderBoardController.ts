@@ -4,55 +4,48 @@ import TeamService from '../services/TeamService';
 import { ITeams } from '../Interfaces/team/ITeam';
 import sortMatches from '../utils/sort';
 
+const ERROR_MESSAGE = 'Internal server error';
+
 export default class LeaderboardController {
   static async getMatchesHome(_req: Request, res: Response) {
     try {
-      // instancia TeamService, pois ainda não estava fazendo static
-      const teamService = new TeamService();
-      const teams = await teamService.getAllTeams();
-      // pega todas as partidas finalizadas
-      const matches = await Promise.all(
-        teams.map(async (team: ITeams) => {
-          // pegar todos os calcs para as partidas finalizadas
-          // O ID da equipe é passado como argumento. Caso o ID seja undefined, é usado o valor 0
-          const match = await LeaderBoardService.getMatchesHome(team.id || 0);
-          return match;
-        }),
+      const allTeams = await TeamService.getAllTeams();
+      const matchHome = await Promise.all(
+        allTeams.map(async (team: ITeams) =>
+          LeaderBoardService.getMatchesHome(team.id || 0)),
       );
-      // ordena as partidas
-      return res.status(200).json(sortMatches(matches));
+      return res.status(200).json(sortMatches(matchHome));
     } catch (error) {
       console.error(error);
-      return res.status(500).json({ error: 'Internal Server Error' });
+      return res.status(500).json({ error: ERROR_MESSAGE });
     }
   }
 
   static async getMatchesAway(_req: Request, res: Response) {
     try {
-      const teamService = new TeamService();
-      const teams = await teamService.getAllTeams();
-      const matches = await Promise.all(
-        teams.map(async (team: ITeams) => {
-          const match = await LeaderBoardService.getMatchesAway(team.id || 0);
-          return match;
-        }),
+      const allTeams = await TeamService.getAllTeams();
+      const matchAway = await Promise.all(
+        allTeams.map(async (team: ITeams) =>
+          LeaderBoardService.getMatchesAway(team.id || 0)),
       );
-      return res.status(200).json(sortMatches(matches));
+      return res.status(200).json(sortMatches(matchAway));
     } catch (error) {
       console.error(error);
-      return res.status(500).json({ error: 'Internal Server Error' });
+      return res.status(500).json({ error: ERROR_MESSAGE });
     }
   }
 
   static async getMatches(_req: Request, res: Response) {
-    const teamService = new TeamService();
-    const teams = await teamService.getAllTeams();
-    const matches = await Promise.all(
-      teams.map(async (team: ITeams) => {
-        const match = await LeaderBoardService.getMatches(team.id || 0);
-        return match;
-      }),
-    );
-    return res.status(200).json(sortMatches(matches));
+    try {
+      const allTeams = await TeamService.getAllTeams();
+      const allFinishedMatches = await Promise.all(
+        allTeams.map(async (team: ITeams) =>
+          LeaderBoardService.getMatches(team.id || 0)),
+      );
+      return res.status(200).json(sortMatches(allFinishedMatches));
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ error: ERROR_MESSAGE });
+    }
   }
 }

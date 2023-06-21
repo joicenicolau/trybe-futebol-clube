@@ -1,4 +1,3 @@
-// pesquisa https://github.com/tryber/sd-027-a-live-lectures/blob/lecture/back/10.1/src/services/EncrypterBcryptService.ts
 import * as bcrypt from 'bcryptjs';
 import { Encrypter } from '../Interfaces/token/Encrypter';
 

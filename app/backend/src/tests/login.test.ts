@@ -1,10 +1,8 @@
 import * as sinon from 'sinon';
 import * as chai from 'chai';
-import { Request, Response, NextFunction } from 'express';
 import { app } from '../app';
 import UserModel from '../database/models/UserModel';
 import UserService from '../services/UserService';
-import UserController from '../controllers/UserController';
 import { mockToken, userMock } from './mock/login.mock';
 import AuthJWTService from '../services/AuthJWTService';
 import EncrypterBcryptService from '../services/AuthBCryptService';
@@ -12,15 +10,11 @@ import EncrypterBcryptService from '../services/AuthBCryptService';
 // @ts-ignore
 import chaiHttp = require('chai-http');
 
-// Crie as instâncias das dependências
 const userModel = UserModel;
 const encrypter = new EncrypterBcryptService();
 const tokenGenerator = new AuthJWTService();
 
-// Crie a instância do serviço UserService
 const userService = new UserService(userModel, encrypter, tokenGenerator);
-const userController = new UserController(userService);
-
 
 chai.use(chaiHttp);
 
@@ -153,62 +147,6 @@ describe('/login rotas', () => {
       expect(response.data).to.be.equal(user.role);
     });
   });
-
-  // describe('UserController', () => {
-  //   let userService: UserService;
-  //   let userController: UserController;
-
-  //   beforeEach(() => {
-  //     userService = new UserService(UserModel, encrypter, tokenGenerator);
-  //     userController = new UserController(userService);
-  //   });
-
-  //   it('retornar o role do usuário se o token for válido', async () => {
-  //     const authorizationHeader = 'valid_token';
-
-  //     // Simulando uma resposta de sucesso do serviço
-  //     sinon.stub(userService, 'getRole').resolves({
-  //       status: 'SUCCESSFUL',
-  //       data: 'admin',
-  //     });
-
-  //     const request = { headers: { authorization: authorizationHeader } } as unknown as Request;
-  //     const response = { status: sinon.stub(), json: sinon.stub() } as unknown as Response;
-
-  //     await userController.getRole(request, response);
-
-  //     expect(response.status).to.be.deep.equal(200);
-  //     expect(response.json).to.be.deep.equal({ role: 'admin' });
-  //   });
-
-  //   it('retornar erro 401 se a autorização estiver faltando', async () => {
-  //     const request = { headers: {} } as Request;
-  //     const response = { status: sinon.stub(), json: sinon.stub() } as  unknown as Response;
-
-  //     await userController.getRole(request, response);
-
-  //     expect(response.status).to.be.deep.equal(401);
-  //     expect(response.json).to.be.deep.equal({ message: 'Authorization header missing' });
-  //   });
-
-  //   it('retornar erro 401 se o token for inválido', async () => {
-  //     const authorizationHeader = 'invalid_token';
-
-  //     // Simulando uma resposta de erro do serviço
-  //     sinon.stub(userService, 'getRole').resolves({
-  //       status: 'UNAUTHORIZED',
-  //       data: { message: 'Invalid token' },
-  //     });
-
-  //     const request = { headers: { authorization: authorizationHeader } } as Request;
-  //     const response = { status: sinon.stub(), json: sinon.stub() } as unknown as Response;
-
-  //     await userController.getRole(request, response);
-
-  //     expect(response.status).to.be.deep.equal(401);
-  //     expect(response.json).to.be.deep.equal({ message: 'Invalid token' });
-    // });
 });
-// }); 
 
 
